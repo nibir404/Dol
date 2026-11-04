@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { PrimaryButton, SecondaryButton } from "./Button";
 import { Reveal } from "./Reveal";
+import { CONTACT } from "@/lib/content";
 
 const ease = [0.23, 1, 0.32, 1] as const;
 
@@ -24,11 +25,11 @@ function Head({ tag, title, sub, light }: { tag: string; title: React.ReactNode;
 
 /* How it works — five steps with a filling connector */
 const STEPS = [
-  { t: "Talk to us", b: "Training, fine-tuning, inference or research." },
-  { t: "Size it together", b: "We recommend GPUs, storage and network." },
-  { t: "Place your order", b: "A clear quote and timeline [in BDT]." },
-  { t: "We deploy", b: "Installed, tested and connected in our Tier III facility." },
-  { t: "Run with support", b: "Our local team monitors and supports you." },
+  { t: "Talk to us", b: "Tell us the problem you want AI to solve." },
+  { t: "Assess the fit", b: "We review the use case, data and resources." },
+  { t: "Check readiness", b: "Availability and terms follow readiness assessment." },
+  { t: "Pilot", b: "A selected pilot, once the platform is accepted." },
+  { t: "Run with support", b: "Local support, under an agreed service." },
 ];
 export function AIHow() {
   return (
@@ -49,7 +50,7 @@ export function AIHow() {
             <Reveal as="li" key={s.t} delay={0.1 + i * 0.08} className="flex flex-col gap-10 border-b border-line px-8 pb-10 pt-9 md:border-b-0 md:border-r md:last:border-r-0 md:gap-16">
               <span className="flex items-center gap-3">
                 <span className="flex h-8 w-8 items-center justify-center rounded-full border border-ink font-mono text-[12px]">{i + 1}</span>
-                {i === 4 && <span className="label text-green">Ongoing</span>}
+                {i === 4 && <span className="label text-mute">Future</span>}
               </span>
               <div className="flex flex-col gap-2">
                 <span className="text-[24px] font-medium tracking-[-0.02em]">{s.t}</span>
@@ -69,7 +70,7 @@ const SPECS = [
   ["Power", "[kW] per rack for high-density GPU servers, redundant UPS and generators"],
   ["Cooling", "[Cooling type] built for GPU heat loads"],
   ["Network", "BDIX connectivity plus [Gbps] international bandwidth"],
-  ["GPUs today", "4 × [GPU model], with more in process"],
+  ["GPUs planned", "8 × NVIDIA RTX PRO 6000 Blackwell Server Edition 96GB, not yet installed"],
   ["Security", "[24/7 access control, CCTV, fire suppression]"],
   ["Support", "[24/7] engineers in Dhaka"],
 ];
@@ -104,11 +105,11 @@ export function AISpecs() {
 
 /* Who it's for */
 const WHO = [
-  { t: "Universities & researchers", b: "Run experiments and train models without sending data abroad." },
-  { t: "Startups", b: "Join the shared-GPU waitlist, or order a dedicated system to scale." },
-  { t: "Banks & fintech", b: "Keep sensitive data in-country on reliable infrastructure." },
-  { t: "Enterprises", b: "Host private AI for operations, documents and customer service." },
-  { t: "Government & public sector", b: "Build national AI services on local infrastructure." },
+  { t: "Universities & researchers", b: "Planned: run experiments and train models without sending data abroad." },
+  { t: "Startups", b: "Register interest in future enterprise pilots and supported GPU workloads." },
+  { t: "Banks & fintech", b: "A future option for keeping sensitive data in-country." },
+  { t: "Enterprises", b: "A future option for private AI in operations and documents." },
+  { t: "Government & public sector", b: "A future conversation about AI services on local infrastructure." },
 ];
 export function AIWho() {
   return (
@@ -140,10 +141,10 @@ export function AIEarly() {
       <div className="flex flex-1 flex-col justify-between gap-8 px-5 py-14 md:flex-row md:items-center md:px-10 lg:px-14">
         <Reveal className="flex flex-col gap-3">
           <span className="label text-red">Early access</span>
-          <span className="text-[28px] font-medium leading-tight tracking-[-0.02em] md:text-[36px]">Be first in line for Daffodil GPUs.</span>
-          <span className="max-w-[560px] text-[16px] text-soft">Priority capacity, and help from our engineers to plan your move.</span>
+          <span className="text-[28px] font-medium leading-tight tracking-[-0.02em] md:text-[36px]">Tell us what you want AI to solve.</span>
+          <span className="max-w-[560px] text-[16px] text-soft">An expression of interest. Availability and terms follow readiness assessment.</span>
         </Reveal>
-        <SecondaryButton tone="dark" href="#enquiry">Join the waitlist</SecondaryButton>
+        <SecondaryButton tone="dark" href="#enquiry">Register your interest</SecondaryButton>
       </div>
     </section>
   );
@@ -151,11 +152,11 @@ export function AIEarly() {
 
 /* FAQ — single-open accordion */
 const FAQ = [
-  ["Are GPUs available now?", "Yes. Our first GPUs are installed and running. Shared access is coming soon, and dedicated GPU systems are open for order now."],
-  ["Can I order my own GPU system?", "Yes. We size it with you, source it, install it in our Tier III facility and support it."],
-  ["How long does a dedicated system take?", "It depends on the GPU model and supply. We confirm the timeline in your quote."],
-  ["Can I bring my own servers?", "Yes. Our AI-ready colocation gives your servers the power, cooling and connectivity they need."],
-  ["Will my data stay in Bangladesh?", "Yes. Your data, models and backups stay in our facility in Bangladesh."],
+  ["Are GPUs available now?", "Not yet. The platform is planned and in development, starting with use inside Daffodil. Selected services may follow, subject to readiness."],
+  ["Can I order my own GPU system?", "Not yet. You can register your interest now. Availability, specifications and commercial terms will follow readiness assessment."],
+  ["When will services open?", "There is no promised launch date. Daffodil will prove value internally first, then consider selected enterprise pilots."],
+  ["Can I bring my own servers?", "GPU colocation is a future pathway, offered where facilities allow and subject to service agreements."],
+  ["Will my data stay in Bangladesh?", "Sensitive workloads are intended for approved local processing. Any external model use needs an allowed data classification, approved provider terms and an authorized route."],
   ["What is BDIX, and why does it matter?", "BDIX is Bangladesh's internet exchange. It keeps local traffic inside the country, which means lower latency for your users."],
   ["What does Tier III mean?", "Every power and cooling path has a backup, and maintenance can happen without shutting your systems down."],
 ];
@@ -206,7 +207,7 @@ export function AIFaq() {
   );
 }
 
-/* Final CTA + enquiry form (front-end only — wire to Daffodil's CRM/email before launch) */
+/* Final CTA + enquiry form (opens a pre-filled email; no data reaches a server) */
 const WORKLOADS = ["Training", "Fine-tuning", "Inference", "Research", "Hosting"];
 export function AIEnquiry() {
   const [picked, setPicked] = useState<string[]>([]);
@@ -217,22 +218,32 @@ export function AIEnquiry() {
       <Rail n="13" />
       <div className="flex flex-1 flex-col bg-[radial-gradient(circle_at_80%_20%,#2A2A2A_0%,#161616_45%,#121212_100%)] lg:flex-row">
         <div className="flex flex-col gap-6 px-5 pb-10 pt-20 md:px-10 lg:w-[560px] lg:shrink-0 lg:px-14 lg:py-[104px]">
-          <Reveal><span className="label text-soft">Reserve · Host · Join the waitlist</span></Reveal>
-          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1] tracking-[-0.05em] md:text-[48px]">Your AI infrastructure is ready when you are.</h2></Reveal>
-          <Reveal delay={0.1}><p className="text-[17px] text-soft">Our team gets back to you within [one working day].</p></Reveal>
+          <Reveal><span className="label text-soft">Expression of interest</span></Reveal>
+          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1] tracking-[-0.05em] md:text-[48px]">Let's discuss the problem you want AI to solve.</h2></Reveal>
+          <Reveal delay={0.1}><p className="text-[17px] text-soft">This opens a pre-filled email to our team. Nothing is sent until you press send.</p></Reveal>
         </div>
         <div className="flex-1 px-5 pb-20 md:px-10 lg:px-14 lg:py-[104px]">
           <AnimatePresence mode="wait">
             {sent ? (
               <motion.div key="ok" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease }} className="flex h-full flex-col justify-center gap-4 border border-line-strong p-10">
-                <span className="label flex items-center gap-2 text-green"><i className="h-1.5 w-1.5 rounded-full bg-green" />Request received</span>
-                <span className="text-[28px] font-medium tracking-[-0.02em]">Thanks — an AI infrastructure engineer will contact you.</span>
+                <span className="label flex items-center gap-2 text-green"><i className="h-1.5 w-1.5 rounded-full bg-green" />Email ready</span>
+                <span className="text-[28px] font-medium tracking-[-0.02em]">Your email app should now be open. Press send to reach our team.</span>
+                <span className="text-[16px] text-soft">Nothing opened? Email <a className="underline" href={`mailto:${CONTACT.info}`}>{CONTACT.info}</a>.</span>
               </motion.div>
             ) : (
               <motion.form
                 key="form"
                 exit={{ opacity: 0, y: -8 }}
-                onSubmit={(e) => { e.preventDefault(); if ((e.currentTarget as HTMLFormElement).reportValidity()) setSent(true); }}
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const form = e.currentTarget as HTMLFormElement;
+                  if (!form.reportValidity()) return;
+                  const f = new FormData(form);
+                  const v = (k: string) => String(f.get(k) ?? "").trim() || "Not provided";
+                  const body = [`Name: ${v("name")}`, `Organisation: ${v("org")}`, `Email: ${v("email")}`, `Phone: ${v("phone")}`, `What I want to run: ${picked.join(", ") || "Not provided"}`, `GPUs needed: ${v("gpus")}`, `Start date: ${v("start")}`].join("\n");
+                  window.location.href = `mailto:${CONTACT.info}?subject=${encodeURIComponent("AI infrastructure: expression of interest")}&body=${encodeURIComponent(body)}`;
+                  setSent(true);
+                }}
                 className="grid grid-cols-1 gap-x-10 gap-y-7 md:grid-cols-2"
               >
                 <label className="flex flex-col"><span className="label text-mute">Name</span><input required name="name" autoComplete="name" className={field} placeholder="Your name" /></label>
@@ -256,7 +267,7 @@ export function AIEnquiry() {
                 <label className="flex flex-col"><span className="label text-mute">GPUs needed</span><input inputMode="numeric" name="gpus" className={field} placeholder="e.g. 2" /></label>
                 <label className="flex flex-col"><span className="label text-mute">Start date</span><input type="month" name="start" className={`${field} [color-scheme:dark]`} /></label>
                 <div className="flex flex-wrap items-center gap-4 pt-4 md:col-span-2">
-                  <PrimaryButton submit>Reserve your GPU system</PrimaryButton>
+                  <PrimaryButton submit>Register your interest</PrimaryButton>
                   <SecondaryButton tone="dark" href="tel:+8801847334837">Talk to an expert</SecondaryButton>
                 </div>
               </motion.form>

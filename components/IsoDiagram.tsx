@@ -104,6 +104,18 @@ export const SCENES: Record<string, Scene> = {
   steps: { rays: 10, boxes: [plate(5.4, 2.6), ...[0, 1, 2, 3].map((i) => B(0.4 + i * 1.2, 0.5, 0.18, 1.0, 1.5, 0.4 + i * 0.55, i === 3 ? { lit: true, det: "leds", n: 3 } : { det: "bars", n: i + 1 }))] },
   // Power: UPS cabinets with vents and a battery string
   power: { rays: 12, boxes: [plate(5.4, 3.2), B(0.4, 0.5, 0.18, 1.2, 2.0, 2.3, { det: "vent" }), B(1.8, 0.5, 0.18, 1.2, 2.0, 2.3, { det: "vent" }), B(3.4, 0.9, 0.18, 1.4, 1.3, 0.7, { det: "bars", n: 4 }), B(3.4, 0.9, 0.88, 1.4, 1.3, 0.4, { lit: true, det: "leds", n: 4 })], lines: [[[3.0, 1.5, 0.4], [3.4, 1.5, 0.4]]] },
+  // AI Labs: two rooms of desks share one GPU pool, walled off from production
+  labs: {
+    rays: 12,
+    boxes: [
+      plate(11.4, 6.2),
+      ...[0, 4.7].flatMap((ox) => [B(ox + 0.3, 0.3, 0.18, 3.9, 3.9, 0.06), ...[0, 1, 2, 3, 4].flatMap((i) => [0, 1, 2, 3, 4].map((j) => B(ox + 0.5 + i * 0.72, 0.5 + j * 0.72, 0.24, 0.48, 0.48, 0.3, { det: "screen" })))]),
+      B(9.5, 0.5, 0.18, 1.5, 1.6, 1.6, { det: "u", n: 3 }),
+      B(4.2, 4.7, 0.18, 1.5, 1.2, 0.5, { lit: true, det: "leds", n: 4 }),
+      B(4.2, 4.7, 0.68, 1.5, 1.2, 0.5, { lit: true, det: "leds", n: 4 }),
+    ],
+    lines: [[[2.2, 4.2, 0.3], [2.2, 5.3, 0.3], [4.2, 5.3, 0.3]], [[6.9, 4.2, 0.3], [6.9, 5.3, 0.3], [5.7, 5.3, 0.3]]],
+  },
 };
 SCENES.datacenter = SCENES.rack;
 

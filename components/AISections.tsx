@@ -26,17 +26,17 @@ export function AIHero() {
   const mx = useMotionValue(0), my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 60, damping: 18 }), sy = useSpring(my, { stiffness: 60, damping: 18 });
   const ax = useTransform(sx, (v) => v * -24), ay = useTransform(sy, (v) => v * -16);
-  const trust = [
+  const trust: { t: string; live?: boolean }[] = [
     { t: "Tier III data center" },
     { t: "BDIX connected" },
-    { t: "First GPUs live", live: true },
+    { t: "GPU platform planned" },
     { t: "Local support" },
   ];
   return (
     <section ref={ref} onPointerMove={(e) => { if (e.pointerType !== "mouse") return; const r = e.currentTarget.getBoundingClientRect(); mx.set((e.clientX - r.left) / r.width - 0.5); my.set((e.clientY - r.top) / r.height - 0.5); }} className="relative overflow-hidden border-b border-line-dark bg-ink text-white">
       <motion.div style={{ y }} className="absolute inset-y-[-8%] right-0 w-full md:w-[80%]">
         <motion.div style={{ x: ax, y: ay, scale: 1.06 }} className="absolute inset-0">
-        <Image src="/img/ai-hall.webp" alt="Wireframe AI data hall: four live GPU racks in red, more capacity outlined" fill sizes="80vw" className="theme-invert object-cover object-left" />
+        <Image src="/img/ai-hall.webp" alt="Wireframe AI data hall: planned GPU racks in red, more capacity outlined" fill sizes="80vw" className="theme-invert object-cover object-left" />
         </motion.div>
       </motion.div>
       <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/70 to-ink/30 md:bg-gradient-to-r md:from-ink md:via-ink/90 md:to-transparent" />
@@ -46,12 +46,12 @@ export function AIHero() {
           <Reveal><span className="label text-[12px] text-soft">Building the foundation for Bangladesh&apos;s AI future</span></Reveal>
           <Reveal delay={0.05}>
             <h2 className="h-display text-[36px] leading-[0.95] tracking-[-0.055em] sm:text-[48px] lg:text-[48px]">
-              AI-ready<br />infrastructure.<br /><span className="text-red">Ready today.</span>
+              Planned AI<br />infrastructure.<br /><span className="text-red">In development.</span>
             </h2>
           </Reveal>
-          <Reveal delay={0.1}><p className="max-w-[520px] text-[17px] leading-[27px] text-soft md:text-[19px] md:leading-[29px]">A Tier III data center in Bangladesh, on BDIX, with local engineers and GPU systems you can order now.</p></Reveal>
+          <Reveal delay={0.1}><p className="max-w-[520px] text-[17px] leading-[27px] text-soft md:text-[19px] md:leading-[29px]">A Tier III data center in Bangladesh, on BDIX, with local engineers and a planned GPU platform for Daffodil first, then selected services for Bangladesh.</p></Reveal>
           <Reveal delay={0.15} className="flex flex-wrap gap-3 pt-3">
-            <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Reserve your GPU system</PrimaryButton>
+            <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Discuss your use case</PrimaryButton>
             <SecondaryButton tone="dark" href="/data-center/ai-infrastructure">Explore AI infrastructure</SecondaryButton>
           </Reveal>
         </div>
@@ -70,9 +70,9 @@ export function AIHero() {
 /* 07.1 · Readiness */
 export function AIToday() {
   const cards = [
-    { k: "Live now", tone: "green", t: "Built and running.", b: "Tier III facility, BDIX and our first 4 GPUs.", bg: "bg-panel" },
-    { k: "Ready to order", tone: "red", t: "Dedicated GPU systems.", b: "Sized, installed and supported in our facility." },
-    { k: "Coming next", tone: "mute", t: "Shared GPUs by the hour.", b: "More capacity is being added." },
+    { k: "In place", tone: "green", t: "Our foundation.", b: "Data-center and connectivity experience, with BDIX.", bg: "bg-panel" },
+    { k: "Planned", tone: "red", t: "Eight GPUs to start.", b: "Two GPU servers at Ashulia, not yet installed, with a proposed path to sixteen." },
+    { k: "Later", tone: "mute", t: "Selected services.", b: "Considered after internal acceptance, subject to readiness." },
   ];
   return (
     <section className="flex border-b border-line-dark bg-ink text-white">
@@ -81,12 +81,12 @@ export function AIToday() {
         <div className="flex flex-col justify-between gap-10 px-5 pb-12 pt-20 md:px-10 lg:flex-row lg:items-end lg:px-14 lg:pb-14 lg:pt-[104px]">
           <div className="flex flex-col gap-5">
             <Reveal><Tag dot="green">Where we are today</Tag></Reveal>
-            <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Ready now.<br /><span className="text-mute">Growing every month.</span></h2></Reveal>
+            <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Programme in development.<br /><span className="text-mute">Daffodil first.</span></h2></Reveal>
           </div>
           <Reveal delay={0.1} className="flex self-start border border-line-strong lg:self-auto">
-            <div className="flex flex-col gap-2 border-r border-line-strong px-7 py-5"><span className="label text-mute">GPUs live</span><span className="font-mono text-[48px] font-medium leading-none">04</span></div>
+            <div className="flex flex-col gap-2 border-r border-line-strong px-7 py-5"><span className="label text-mute">GPUs planned</span><span className="font-mono text-[48px] font-medium leading-none">08</span></div>
             <div className="flex flex-col gap-2 px-7 py-5">
-              <span className="label text-mute">In deployment</span>
+              <span className="label text-mute">Proposed path</span>
               <span className="flex items-center gap-1.5 font-mono text-[48px] font-medium leading-none text-red">
                 +<span className="flex gap-1">{[0, 1, 2].map((i) => <motion.i key={i} className="block h-2.5 w-2.5 bg-red" animate={{ opacity: [0.2, 1, 0.2] }} transition={{ duration: 1.4, repeat: Infinity, delay: i * 0.2 }} />)}</span>
               </span>
@@ -113,9 +113,9 @@ export function AIToday() {
 
 /* 07.2 · Why */
 const WHY = [
-  { k: "01 · Tier III reliability", t: "Redundant power and cooling, maintained without shutting down." },
+  { k: "01 · Tier III reliability", t: "Designed around redundant power and cooling, maintained without shutting down." },
   { k: "02 · BDIX speed", t: "Traffic stays on Bangladeshi networks, for low latency nationwide." },
-  { k: "03 · Your data stays here", t: "Models, data and backups stay inside Bangladesh." },
+  { k: "03 · Your data stays here", t: "Designed so models, data and backups stay inside Bangladesh." },
   { k: "04 · Local experts", t: "Engineers who plan, install and run with you, in Bangla and English." },
 ];
 function WhyItem({ k, t }: { k: string; t: string }) {
@@ -132,7 +132,7 @@ export function AIWhy() {
       <Rail n="07.2" />
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-col gap-5 px-5 pb-12 pt-20 md:px-10 lg:px-14 lg:pb-14 lg:pt-[104px]">
-          <Reveal><Tag>Why run AI with Daffodil</Tag></Reveal>
+          <Reveal><Tag>Why AI with Daffodil</Tag></Reveal>
           <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Built for AI.<br /><span className="text-mute">Based in Bangladesh.</span></h2></Reveal>
         </div>
         <div className="flex flex-col border-t border-line-dark lg:flex-row">
@@ -159,7 +159,7 @@ export function AIResearch() {
           <div className="flex flex-col gap-6">
             <Reveal><Tag light>Research-driven</Tag></Reveal>
             <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">From campus<br />to compute.</h2></Reveal>
-            <Reveal delay={0.1}><p className="max-w-[440px] text-[18px] leading-7 text-body md:text-[19px] md:leading-[29px]">Train and test models on local GPUs, without sending research data abroad.</p></Reveal>
+            <Reveal delay={0.1}><p className="max-w-[440px] text-[18px] leading-7 text-body md:text-[19px] md:leading-[29px]">Planned to let teams train and test models on local GPUs, without sending research data abroad.</p></Reveal>
           </div>
           <ul className="flex flex-col border-t border-line">
             {uses.map((u, i) => (
@@ -179,17 +179,17 @@ export function AIResearch() {
 /* 07.4 · Three ways */
 export function AIWays() {
   const ways = [
-    { k: "Recommended · Open now", red: true, t: "Order a dedicated GPU system", b: "We size, source, install and support it.", img: "/img/ai-server.webp", cta: <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Reserve your system</PrimaryButton>, bg: "bg-panel" },
-    { k: "AI colocation", t: "Host your own AI servers", b: "AI-ready racks with power, cooling and BDIX.", img: "/img/ai-colo.webp", cta: <SecondaryButton tone="dark" href="/data-center/ai-infrastructure#enquiry">Ask about colocation</SecondaryButton> },
-    { k: "Coming soon", t: "Join the GPU waitlist", b: "Priority capacity when shared GPUs open.", img: "/img/ai-waitlist.webp", cta: <TextLink tone="dark" href="/data-center/ai-infrastructure#enquiry">Join the waitlist</TextLink>, dim: true },
+    { k: "First candidate · Future", red: true, t: "Private enterprise AI", b: "Company knowledge assistants and employee productivity support.", img: "/img/ai-server.webp", cta: <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Discuss your use case</PrimaryButton>, bg: "bg-panel" },
+    { k: "Future pathway", t: "GPU colocation", b: "Space, power and connectivity for customer GPU systems, where facilities allow.", img: "/img/ai-colo.webp", cta: <SecondaryButton tone="dark" href="/data-center/ai-infrastructure#enquiry">Ask about colocation</SecondaryButton> },
+    { k: "Future pathway", t: "Research and GPU workloads", b: "Supported research, training and inference, subject to capacity and readiness.", img: "/img/ai-waitlist.webp", cta: <TextLink tone="dark" href="/data-center/ai-infrastructure#enquiry">Register your interest</TextLink>, dim: true },
   ];
   return (
     <section className="flex border-b border-line-dark bg-ink text-white">
       <Rail n="07.4" />
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-col gap-5 px-5 pb-12 pt-20 md:px-10 lg:px-14 lg:pb-14 lg:pt-[104px]">
-          <Reveal><Tag>What you can do</Tag></Reveal>
-          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Three ways to start.</h2></Reveal>
+          <Reveal><Tag>What may come next</Tag></Reveal>
+          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Three future pathways.</h2></Reveal>
         </div>
         <div className="grid grid-cols-1 border-t border-line-dark md:grid-cols-3">
           {ways.map((w, i) => (

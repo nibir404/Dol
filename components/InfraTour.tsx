@@ -24,7 +24,7 @@ const STOPS = [
   { at: [5, 8], k: "Generators", t: "Diesel backup, fuelled for days.", b: "N+1 generators start automatically and carry the full load through long cuts." },
   { at: [14, 22.5], k: "Chiller plant", t: "Cooling sized for GPU heat.", b: "Chillers and dry coolers feed in-row units inside the hall." },
   { at: [12, 9.6], k: "Cold aisle", t: "Step into the data hall.", b: "Contained hot and cold aisles keep inlet air steady for every rack." },
-  { at: [20, 5.6], k: "GPU pod", t: "First GPU systems are live.", b: "Order a system today and run training or inference here in Bangladesh." },
+  { at: [20, 5.6], k: "GPU pod", t: "GPU systems are planned.", b: "Two planned servers start with eight GPUs, not yet installed, with a proposed path to sixteen." },
   { at: [24, 13.6], k: "Your rack", t: "1U to a full cabinet.", b: "Colocate your own hardware with remote hands from local engineers." },
   { at: [32.5, 9.5], k: "Meet-me room", t: "Out to BDIX and the world.", b: "Carrier-neutral cross-connects to BDIX and international upstreams." },
 ] as const;
@@ -195,10 +195,10 @@ export default function InfraTour() {
         <div className="relative flex h-full flex-col justify-end px-5 pb-16 md:justify-center md:px-10 lg:pl-[176px]">
           <motion.div animate={{ opacity: stop === -1 || stop === STOPS.length ? 1 : 0, y: stop === -1 || stop === STOPS.length ? 0 : -16 }} transition={{ duration: 0.45 }} className={clsx("flex max-w-[540px] flex-col gap-6", !(stop === -1 || stop === STOPS.length) && "pointer-events-none absolute")}>
             <span className="label text-soft">Building the foundation for Bangladesh&apos;s AI future</span>
-            <h2 className="h-display text-[36px] leading-[0.98] tracking-[-0.05em] md:text-[48px]">AI-ready infrastructure.<br /><span className="text-red">Ready today.</span></h2>
-            <p className="max-w-[460px] text-[17px] leading-[27px] text-body">A Tier III data center in the Hi-Tech Park, on BDIX, with local engineers and GPU systems you can order now.</p>
+            <h2 className="h-display text-[36px] leading-[0.98] tracking-[-0.05em] md:text-[48px]">Planned AI infrastructure.<br /><span className="text-red">In development.</span></h2>
+            <p className="max-w-[460px] text-[17px] leading-[27px] text-body">A Tier III data center in the Hi-Tech Park, on BDIX, with local engineers and a planned GPU platform for Daffodil first.</p>
             <div className="pointer-events-auto flex flex-wrap gap-3 pt-1">
-              <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Reserve your GPU system</PrimaryButton>
+              <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Discuss your use case</PrimaryButton>
               <SecondaryButton href="/data-center/ai-infrastructure">Explore AI infrastructure</SecondaryButton>
             </div>
             {stop === -1 && !reduce && <span className="label pt-3 text-soft">Scroll to walk the campus ↓</span>}
