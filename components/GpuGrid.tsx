@@ -95,8 +95,8 @@ export default function GpuGrid() {
           <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.02] md:text-[48px]">Capacity planned,<br /> card by card.</h2></Reveal>
         </div>
         <Reveal delay={0.1} className="flex items-baseline gap-3 font-mono">
-          <span className="text-[44px] font-medium tabular-nums tracking-[-0.03em] text-red">{String(live).padStart(2, "0")}</span>
-          <span className="label text-soft">/ {COLS * ROWS} slots · illustration</span>
+          <span className="text-[44px] font-medium tabular-nums tracking-[-0.03em] text-red">08</span>
+          <span className="label text-soft">GPUs planned · Proposed path to 16</span>
         </Reveal>
       </div>
       <div className="relative">

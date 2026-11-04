@@ -85,7 +85,7 @@ export function AIUses() {
   const [on, setOn] = useState(0);
   const pos = USES.map((_, i) => { const a = -Math.PI / 2 + (i / USES.length) * Math.PI * 2; return [50 + Math.cos(a) * 39, 50 + Math.sin(a) * 39]; });
   return (
-    <Frame n="07.7" tag="Across Daffodil" title={<>One foundation.<br /><span className="text-mute">Practical uses across Daffodil.</span></>} sub="Illustrative use cases for phased assessment and approval."
+    <Frame n="07.7" tag="Across Daffodil" title={<>One foundation.<br /><span className="text-mute">Practical uses across Daffodil.</span></>} sub="Use cases for phased assessment and approval."
       note="These examples describe intended opportunities. Each use case needs an accountable owner, permitted data, evaluation and an approved deployment path. Existing systems and teams keep their decision authority.">
       <div className="flex flex-col border-t border-line-dark lg:flex-row">
         <div className="relative mx-auto aspect-square w-full max-w-[640px] lg:w-[50%] lg:shrink-0">
