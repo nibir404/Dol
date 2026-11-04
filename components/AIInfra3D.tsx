@@ -48,7 +48,7 @@ const NODES: Node[] = [
   { id: "labB", label: "AI Lab B", layer: "Isolated academic zone", level: 0, desc: "A second planned lab with 25 students and 1 instructor, sharing the same academic GPU pool.", spec: ["26 seats", "Resettable environments"] },
   { id: "pool", label: "Shared academic GPU pool", layer: "Isolated academic zone", level: 0, desc: "Two H200 NVL-class GPUs, or a validated equivalent, kept separate from the eight production GPUs.", spec: ["2 × H200 NVL-class", "Separate from production"] },
   ...LAB_PATH.map((label, i): Node => ({ id: `step${i}`, label, layer: "From lab to real use", level: 0, desc: "Every promotion is owned, mentored, isolated and auditable. No student project receives unrestricted production access.", spec: [`Step ${i + 1} of 6`], minor: true })),
-  { id: "bangladesh", label: "Bangladesh", layer: "Future pathway", level: 0, desc: "Prove value inside Daffodil first. Then explore selected enterprise services for Bangladesh, as capacity and readiness allow. Illustrative, not current service coverage.", spec: ["Subject to readiness"] },
+  { id: "bangladesh", label: "Bangladesh", layer: "Future pathway", level: 0, desc: "Prove value inside Daffodil first. Then explore selected enterprise services for Bangladesh, as capacity and readiness allow. Not current service coverage.", spec: ["Subject to readiness"] },
 ];
 const LAB_IDS = ["zone", "central", "labA", "labB", "pool", ...LAB_PATH.map((_, i) => `step${i}`)];
 const PEOPLE_IDS = ["students", "faculty", "researchers", "hr", "accounts", "dol", "concerns", "security"];
@@ -506,7 +506,7 @@ export default function AIInfra3D({ labs = false }: { labs?: boolean }) {
         </div>}
 
         <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-3 md:left-6 md:top-6">
-          <span className="twin-glass label inline-flex items-center gap-2 self-start px-3 py-2"><i className="h-1.5 w-1.5 bg-red" />Concept · Planned architecture</span>
+          <span className="twin-glass label inline-flex items-center gap-2 self-start px-3 py-2"><i className="h-1.5 w-1.5 bg-red" />Planned architecture</span>
           <div className={`twin-glass pointer-events-auto hidden w-[190px] flex-col p-1.5 ${labs ? "" : "md:flex"}`} role="group" aria-label="Show one floor">
             {[...LAYERS].reverse().map((l, ri) => { const i = LAYERS.length - 1 - ri; return (
               <button key={l} aria-pressed={layer === i} onClick={() => { setSel(null); setTrace(-1); setLayer(layer === i ? null : i); }} className={`twin-row ${layer === i ? "is-on" : ""}`}><span className="font-mono text-[11px] opacity-60">L{i + 1}</span>{l}</button>
@@ -560,7 +560,7 @@ function FlatView({ step, scene, sel, expanded, onExpand, onPick }: { step: numb
   return (
     <div className="flex flex-col gap-6 p-5 md:p-10 lg:px-14">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <span className="twin-glass label inline-flex items-center gap-2 px-3 py-2"><i className="h-1.5 w-1.5 bg-red" />Concept · Planned architecture</span>
+        <span className="twin-glass label inline-flex items-center gap-2 px-3 py-2"><i className="h-1.5 w-1.5 bg-red" />Planned architecture</span>
         <button className={`twin-btn twin-glass ${expanded ? "is-on" : ""}`} aria-pressed={expanded} onClick={onExpand}>{expanded ? "16 GPUs · proposed" : "8 GPUs · initial"}</button>
       </div>
       {scene === 3 && <LabsFlat step={step} />}

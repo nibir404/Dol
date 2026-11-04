@@ -40,7 +40,7 @@ export function BdMap() {
   useEffect(() => { fetch("/bd.json").then((r) => r.json()).then((polys: number[][][][]) => setD(polys.flatMap((p) => p.map((ring) => "M" + ring.map(([x, y]) => toMap(x, y).map((n) => n.toFixed(1)).join(",")).join("L") + "Z")).join(""))).catch(() => {}); }, []);
   const [ax, ay] = toMap(90.32, 23.89), [dx, dy] = toMap(90.374, 23.746);
   return (
-    <svg viewBox="0 0 450 600" className="h-full w-full" role="img" aria-label="Map of Bangladesh with the planned AI infrastructure at Daffodil Smart City, Ashulia and a recovery copy at Dhanmondi. Illustrative pathway, not current service coverage.">
+    <svg viewBox="0 0 450 600" className="h-full w-full" role="img" aria-label="Map of Bangladesh with the planned AI infrastructure at Daffodil Smart City, Ashulia and a recovery copy at Dhanmondi. Planned pathway, not current service coverage.">
       <path d={d} fill="var(--iso-l)" stroke="var(--iso-line)" strokeWidth="1" />
       <line x1={ax} y1={ay} x2={dx} y2={dy} stroke="#E31E24" strokeWidth="1.2" strokeDasharray="3 2" />
       <circle cx={ax} cy={ay} r="11" fill="none" stroke="#E31E24" /><circle cx={ax} cy={ay} r="4.5" fill="#E31E24" /><circle cx={dx} cy={dy} r="3" fill="none" stroke="#E31E24" strokeWidth="1.4" />

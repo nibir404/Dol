@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useMotionTemplate, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { useCallback, useRef, useState } from "react";
 import { PrimaryButton } from "./Button";
@@ -59,7 +60,7 @@ export default function Hero() {
         <motion.div style={{ y: copyY, opacity: copyOpacity }} className="pointer-events-none relative z-10 flex min-h-[100svh]">
           <div className="pointer-events-none flex w-full flex-col justify-end px-5 pb-[104px] pt-[18vh] md:w-[720px] md:px-10 md:pb-40 lg:pl-[176px]">
             <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="tag label border-line-strong bg-panel/80">
-              <i className="tag-dot" />Nationwide ISP · Since 2002
+              <i className="tag-dot" />Internet · Hosting · Data center · AI
             </motion.span>
             <h1 className="h-display mt-6 text-[44px] leading-[0.92] tracking-[-0.055em] sm:text-[64px] lg:text-[64px] xl:text-[64px]">
               {["Connect", "your world"].map((w, i) => (
@@ -69,13 +70,17 @@ export default function Hero() {
               ))}
             </h1>
             <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.3 }} className="mt-5 max-w-[440px] text-[17px] text-soft md:text-[19px]">
-              Fibre internet, hosting and data centers across Bangladesh.
+              Fibre internet, hosting and data centers today. AI infrastructure planned.
             </motion.p>
+
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.36 }} className="pointer-events-auto mt-5">
+              <Link href="#ai-infrastructure" className="label inline-flex min-h-11 items-center gap-2.5 border border-red px-4 hover:bg-red hover:text-white"><i className="block h-1.5 w-1.5 bg-red" />Planned AI infrastructure →</Link>
+            </motion.div>
 
             <motion.form
               onSubmit={(e) => { e.preventDefault(); fly(); }}
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.42 }}
-              className="pointer-events-auto mt-8 md:mt-12"
+              className="pointer-events-auto mt-8"
             >
               <span className="hero-search-label label mb-3.5 block text-mute">Check coverage at your address</span>
               <div className="hero-search flex flex-col gap-1.5 rounded-[6px] border border-line-strong bg-panel/90 p-1.5 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] backdrop-blur-sm transition-colors focus-within:border-white/40 sm:h-[52px] sm:flex-row sm:items-center sm:gap-0 sm:rounded-[6px]">
