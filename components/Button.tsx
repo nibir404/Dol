@@ -78,7 +78,7 @@ export function SecondaryButton({ children, size = "md", tone = "light", href = 
       whileHover="hover"
       whileTap={{ scale: 0.97 }}
       className={clsx(
-        "group inline-flex shrink-0 items-center gap-2.5 whitespace-nowrap rounded-[6px] border-[1.5px] px-[22px] font-medium tracking-[-0.01em] outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-red focus-visible:ring-offset-2",
+        "btn-secondary group inline-flex shrink-0 items-center justify-center gap-2.5 whitespace-nowrap rounded-[6px] border-[1.5px] px-[22px] font-medium tracking-[-0.01em] outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-red focus-visible:ring-offset-2",
         s.h, s.text,
         tone === "light"
           ? "border-ink text-ink [@media(hover:hover)]:hover:bg-ink [@media(hover:hover)]:hover:text-white"

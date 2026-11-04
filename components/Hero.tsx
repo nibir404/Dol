@@ -54,10 +54,10 @@ export default function Hero() {
         <motion.div aria-hidden style={{ background: spot }} className="pointer-events-none absolute inset-0 mix-blend-screen" />
 
         {/* Readability fades */}
-        <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(120% 90% at 72% 48%, transparent 35%, var(--theme-bg) 92%), linear-gradient(0deg, var(--theme-bg) 0%, transparent 30%), linear-gradient(90deg, var(--theme-bg) 0%, color-mix(in srgb, var(--theme-bg) 70%, transparent) 30%, transparent 60%)" }} />
+        <div className="hero-fade pointer-events-none absolute inset-0" style={{ background: "radial-gradient(120% 90% at 72% 48%, transparent 35%, var(--theme-bg) 92%), linear-gradient(0deg, var(--theme-bg) 0%, transparent 30%), linear-gradient(90deg, var(--theme-bg) 0%, color-mix(in srgb, var(--theme-bg) 70%, transparent) 30%, transparent 60%)" }} />
 
         <motion.div style={{ y: copyY, opacity: copyOpacity }} className="pointer-events-none relative z-10 flex min-h-[100svh]">
-          <div className="pointer-events-none flex w-full flex-col justify-end px-5 pb-36 pt-[38vh] md:w-[720px] md:px-10 md:pb-40 lg:pl-[176px]">
+          <div className="pointer-events-none flex w-full flex-col justify-end px-5 pb-[104px] pt-[18vh] md:w-[720px] md:px-10 md:pb-40 lg:pl-[176px]">
             <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="tag label border-line-strong bg-panel/80">
               <i className="tag-dot" />Nationwide ISP · Since 2002
             </motion.span>
@@ -77,8 +77,8 @@ export default function Hero() {
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease, delay: 0.42 }}
               className="pointer-events-auto mt-8 md:mt-12"
             >
-              <span className="label mb-3.5 block text-mute">Check coverage at your address</span>
-              <div className="flex flex-col gap-1.5 rounded-[6px] border border-line-strong bg-panel/90 p-1.5 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] backdrop-blur-sm transition-colors focus-within:border-white/40 sm:h-[52px] sm:flex-row sm:items-center sm:gap-0 sm:rounded-[6px]">
+              <span className="hero-search-label label mb-3.5 block text-mute">Check coverage at your address</span>
+              <div className="hero-search flex flex-col gap-1.5 rounded-[6px] border border-line-strong bg-panel/90 p-1.5 shadow-[inset_0_4px_12px_rgba(0,0,0,0.5)] backdrop-blur-sm transition-colors focus-within:border-white/40 sm:h-[52px] sm:flex-row sm:items-center sm:gap-0 sm:rounded-[6px]">
                 <div role="radiogroup" aria-label="Connection type" className="label relative flex h-12 shrink-0 rounded-[6px] bg-ink/60 p-1 sm:h-full sm:bg-transparent">
                   {(["Home", "Business"] as const).map((s) => (
                     <button
@@ -117,7 +117,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div className="absolute inset-x-0 bottom-0 z-10 grid grid-cols-2 border-t border-line-dark md:grid-cols-4 lg:px-[120px]" style={{ background: "color-mix(in srgb, var(--theme-bg) 55%, transparent)", backdropFilter: "blur(10px)" }}>
+      <div className="relative z-10 grid grid-cols-2 md:absolute md:inset-x-0 md:bottom-0 border-t border-line-dark md:grid-cols-4 lg:px-[120px]" style={{ background: "color-mix(in srgb, var(--theme-bg) 55%, transparent)", backdropFilter: "blur(10px)" }}>
         {STATS.map((s, i) => (
           <div key={s.label} className={`flex flex-col gap-2 border-line-dark px-5 py-5 md:px-8 lg:px-10 ${i % 2 === 0 ? "border-r" : ""} ${i < 2 ? "border-b md:border-b-0" : ""} md:border-r md:last:border-r-0`}>
             <span className="label text-mute">{s.label}</span>

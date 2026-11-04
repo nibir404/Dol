@@ -292,3 +292,15 @@ html[data-theme="light"] .sheet .text-white, html[data-theme="light"] .sheet .te
   .nav-bar { height: 60px; }
 }
 @media (hover: none) { .group:hover .iso-obj .iso-glass { opacity: 1; } }
+
+/* Phone: full-width buttons, and the coverage search as the hero's main card */
+@media (max-width: 767px) {
+  main .btn-primary, main .btn-secondary { width: 100%; height: 48px; }
+  .hero-search { background: var(--nav-mega) !important; border: 1px solid color-mix(in srgb, #E31E24 55%, transparent) !important; box-shadow: 0 0 0 4px rgba(227,30,36,.12), 0 18px 40px -12px rgba(0,0,0,.45) !important; padding: 8px !important; gap: 8px !important; backdrop-filter: none !important; }
+  .hero-search [role="radiogroup"] { background: var(--nav-group) !important; height: 44px; }
+  .hero-search input { height: 52px !important; background: var(--nav-group); border-radius: 6px; color: var(--theme-fg) !important; }
+  .hero-search-label { color: var(--theme-fg) !important; font-size: 12px; }
+}
+@media (max-width: 767px) { .hero-fade { background: linear-gradient(0deg, var(--theme-bg) 0%, color-mix(in srgb, var(--theme-bg) 85%, transparent) 45%, transparent 75%) !important; } }
+@media (max-width: 767px) { html .hero-search div[role="radiogroup"] { background-color: var(--nav-group) !important; } html .hero-search div[role="radiogroup"] button[aria-checked="false"] { color: var(--nav-fg) !important; } }
+@media (max-width: 767px) { html .hero-search button[aria-checked="true"] { color: #fff !important; } html .hero-search button[aria-checked="true"] > span.absolute { background: #E31E24 !important; } .hero-search input { min-height: 52px; } }
