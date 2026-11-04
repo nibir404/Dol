@@ -42,13 +42,15 @@ const NODES: Node[] = [
   { id: "approval", label: "Approval", layer: "Across every layer", level: 2, desc: "Sensitive data onboarding, production model releases and high-impact actions remain subject to responsible human approval.", spec: ["Human approval"], minor: true },
   { id: "audit", label: "Audit", layer: "Across every layer", level: 1, desc: "Access, model, routing and usage metadata support accountability.", spec: ["Usage metadata", "Defined retention"], minor: true },
   { id: "recovery", label: "Recovery", layer: "Across every layer", level: 0, desc: "Protected backups and recovery exercises, with recovery decisions subject to human approval.", spec: ["Recovery exercises"], minor: true },
+  { id: "zone", label: "Isolated academic zone", layer: "Planned AI Labs", level: 0, desc: "The lab GPUs and the lab network zone are separate from production, so lab work is designed not to compete with institutional services.", spec: ["Separate network zone", "Accounts and quotas"] },
+  { id: "central", label: "Central AI platform", layer: "Production", level: 4, desc: "The central production platform. A lab project reaches it only after review, approval, an isolated pilot and an adoption decision.", spec: ["8 production GPUs planned", "No direct lab access"] },
   { id: "labA", label: "AI Lab A", layer: "Isolated academic zone", level: 0, desc: "A planned lab with 25 students and 1 instructor. Lab PCs stay standard: GPU time comes through accounts and quotas.", spec: ["26 seats", "Resettable environments"] },
   { id: "labB", label: "AI Lab B", layer: "Isolated academic zone", level: 0, desc: "A second planned lab with 25 students and 1 instructor, sharing the same academic GPU pool.", spec: ["26 seats", "Resettable environments"] },
   { id: "pool", label: "Shared academic GPU pool", layer: "Isolated academic zone", level: 0, desc: "Two H200 NVL-class GPUs, or a validated equivalent, kept separate from the eight production GPUs.", spec: ["2 × H200 NVL-class", "Separate from production"] },
   ...LAB_PATH.map((label, i): Node => ({ id: `step${i}`, label, layer: "From lab to real use", level: 0, desc: "Every promotion is owned, mentored, isolated and auditable. No student project receives unrestricted production access.", spec: [`Step ${i + 1} of 6`], minor: true })),
   { id: "bangladesh", label: "Bangladesh", layer: "Future pathway", level: 0, desc: "Prove value inside Daffodil first. Then explore selected enterprise services for Bangladesh, as capacity and readiness allow. Illustrative, not current service coverage.", spec: ["Subject to readiness"] },
 ];
-const LAB_IDS = ["labA", "labB", "pool", ...LAB_PATH.map((_, i) => `step${i}`)];
+const LAB_IDS = ["zone", "central", "labA", "labB", "pool", ...LAB_PATH.map((_, i) => `step${i}`)];
 const PEOPLE_IDS = ["students", "faculty", "researchers", "hr", "accounts", "dol", "concerns", "security"];
 const GOV_IDS = ["identity", "permissions", "approval", "audit", "recovery"];
 const TOUR = [
@@ -77,7 +79,7 @@ type Kind = "body" | "top" | "deep" | "red" | "ghost" | "slab";
 type Mat = { m: THREE.Material; base: number };
 type Part = { id: string; level: number; g: THREE.Group; mats: Mat[]; meshes: THREE.Mesh[]; anchor: THREE.Vector3; hot: number; dim: number };
 
-export default function AIInfra3D() {
+export default function AIInfra3D({ labs = false }: { labs?: boolean }) {
   const [sel, setSel] = useState<string | null>(null);
   const [lifted, setLifted] = useState(true);
   const [expanded, setExpanded] = useState(false);
@@ -85,21 +87,27 @@ export default function AIInfra3D() {
   const [trace, setTrace] = useState(-1);
   const [failed, setFailed] = useState(false);
   const [view, setView] = useState<"3d" | "2d">("3d");
-  const [scene, setScene] = useState<number | null>(null);
+  const [scene, setScene] = useState<number | null>(labs ? 3 : null);
+  const [step, setStep] = useState(-1);
   const [playing, setPlaying] = useState(false);
   const [hover, setHover] = useState<string | null>(null);
   const host = useRef<HTMLDivElement>(null);
   const labels = useRef<Record<string, HTMLButtonElement | null>>({});
-  const live = useRef({ sel: null as string | null, hover: null as string | null, lifted: true, expanded: false, layer: null as number | null, tracing: false, scene: null as number | null, zoom: 1, resetAt: 0 });
+  const live = useRef({ sel: null as string | null, hover: null as string | null, lifted: true, expanded: false, layer: null as number | null, tracing: false, scene: (labs ? 3 : null) as number | null, step: -1, zoom: 1, resetAt: 0 });
 
   const active = trace >= 0 ? TRACE[trace][0] : sel;
-  useEffect(() => { Object.assign(live.current, { sel: active, hover, lifted, expanded, layer, tracing: trace >= 0, scene }); }, [active, hover, lifted, expanded, layer, trace, scene]);
+  useEffect(() => { Object.assign(live.current, { sel: active, hover, lifted, expanded, layer, tracing: trace >= 0, scene, step }); }, [active, hover, lifted, expanded, layer, trace, scene, step]);
+  useEffect(() => {
+    if (step < 0) return;
+    const t = setTimeout(() => setStep(step < LAB_PATH.length - 1 ? step + 1 : -1), 1400);
+    return () => clearTimeout(t);
+  }, [step]);
   useEffect(() => {
     if (!playing) return;
     const t = setTimeout(() => { if (scene === null || scene >= TOUR.length - 1) setPlaying(false); else setScene(scene + 1); }, 7000);
     return () => clearTimeout(t);
   }, [playing, scene]);
-  const openScene = (i: number | null) => { setSel(null); setLayer(null); setTrace(-1); setScene(i); if (i === null) setPlaying(false); };
+  const openScene = (i: number | null) => { setSel(null); setLayer(null); setTrace(-1); setStep(-1); setScene(i ?? (labs ? 3 : null)); if (i === null) setPlaying(false); };
 
   useEffect(() => {
     if (trace < 0) return;
@@ -136,7 +144,7 @@ export default function AIInfra3D() {
     controls.enableDamping = true; controls.dampingFactor = 0.08;
     controls.enableZoom = false; controls.enablePan = false;
     controls.minPolarAngle = 0.5; controls.maxPolarAngle = 1.5;
-    controls.autoRotate = !reduce; controls.autoRotateSpeed = 0.35;
+    controls.autoRotate = !reduce && !labs; controls.autoRotateSpeed = 0.35;
     renderer.domElement.style.touchAction = "pan-y"; // a vertical swipe still scrolls the page
 
     /* ---------- materials and builders ---------- */
@@ -326,6 +334,11 @@ export default function AIInfra3D() {
       if (i === 0) box(p, 0.1, 0.06, 5, "red", 0, 0.3, -3.8);
       if (i === 5) { box(p, 0.16, 0.08, 5.6, "red", 0, 0.3, -4.1); const c = mesh(p, new THREE.ConeGeometry(0.42, 0.9, 16), "red", 0, 0.34, -7.2, false); c.rotation.x = -Math.PI / 2; }
     });
+    const zn = part("zone", -32, 0, -8.6, 1); labGroups.push(zn.g);
+    const ct = part("central", 1.5, 0, 0, 3.4); labGroups.push(ct.g);
+    const pathPulse = new THREE.Mesh(new THREE.SphereGeometry(0.42, 20, 14), new THREE.MeshBasicMaterial({ color: 0xff3b40 }));
+    pathPulse.visible = false; scene.add(pathPulse);
+    const pulseTo = new THREE.Vector3();
     /* ---------- Bangladesh: shown in the tour's pathway scene ---------- */
     const bdP = part("bangladesh", 37, 0, 0, 3); bdP.g.visible = false; labGroups.forEach((g) => { g.visible = false; });
     const Z3 = 3.1, PL = 90.3, PA = 23.7;
@@ -369,7 +382,7 @@ export default function AIInfra3D() {
     let down: [number, number] | null = null;
     const onMove = (e: PointerEvent) => { if (e.pointerType !== "mouse" || e.buttons) return; const id = pick(e); setHover(id); renderer.domElement.style.cursor = id ? "pointer" : ""; };
     const onDown = (e: PointerEvent) => { down = [e.clientX, e.clientY]; controls.autoRotate = false; };
-    const onUp = (e: PointerEvent) => { if (down && Math.hypot(e.clientX - down[0], e.clientY - down[1]) < 6) { const id = pick(e); setTrace(-1); setSel(id); if (id) { setScene(null); setPlaying(false); } } down = null; };
+    const onUp = (e: PointerEvent) => { if (down && Math.hypot(e.clientX - down[0], e.clientY - down[1]) < 6) { const id = pick(e); setTrace(-1); setSel(id); if (id) { setStep(-1); setScene(labs ? 3 : null); setPlaying(false); } } down = null; };
     const dom = renderer.domElement;
     dom.addEventListener("pointermove", onMove); dom.addEventListener("pointerdown", onDown); dom.addEventListener("pointerup", onUp);
 
@@ -405,9 +418,12 @@ export default function AIInfra3D() {
       const main = s.sel;
       const labsOn = s.scene === 3, bdOn = s.scene === 5, focusIds = s.scene !== null ? TOUR[s.scene].ids : null;
       labGroups.forEach((g) => { g.visible = labsOn; });
+      pathPulse.visible = labsOn && s.step >= 0;
+      if (pathPulse.visible) { parts[`step${s.step}`].g.getWorldPosition(pulseTo); pulseTo.y += 1.3; pathPulse.position.lerp(pulseTo, reduce ? 1 : 1 - Math.exp(-dt * 7)); }
       bdP.g.visible = bdOn; bdLink.visible = bdOn;
       for (const p of Object.values(parts)) {
-        const isHot = p.id === main || p.id === s.hover;
+        const stepNo = p.id.startsWith("step") ? Number(p.id.slice(4)) : -1;
+        const isHot = p.id === main || p.id === s.hover || (s.step >= 0 && stepNo >= 0 && stepNo <= s.step);
         const out = main ? p.id !== main : focusIds ? !focusIds.includes(p.id) : s.layer !== null ? p.level !== s.layer || GOV_LEVEL.includes(p.id) : false;
         p.hot = ease(p.hot, isHot ? 1 : 0, k);
         p.dim = ease(p.dim, out && !isHot ? 1 : 0, k);
@@ -462,26 +478,27 @@ export default function AIInfra3D() {
   return (
     <div className="twin border-t border-line-dark">
       <div className="flex items-center justify-between gap-3 border-b border-line-dark px-5 py-3 md:px-10 lg:px-14">
-        <span className="label text-soft">View</span>
+        <span className="flex items-center gap-3"><span className="label text-soft">View</span>{labs && <button className={`twin-btn border border-red ${step >= 0 ? "is-on" : ""}`} onClick={() => { setSel(null); setStep(step >= 0 ? -1 : 0); }}>{step >= 0 ? "Stop" : "Run project path"}</button>}</span>
         <div className="twin-glass flex gap-1 p-1" role="group" aria-label="Choose a view">
           {!failed && <button className={`twin-btn ${view === "3d" ? "is-on" : ""}`} aria-pressed={view === "3d"} onClick={() => setView("3d")}>3D interactive</button>}
           <button className={`twin-btn ${view === "2d" ? "is-on" : ""}`} aria-pressed={view === "2d"} onClick={() => { setTrace(-1); setView("2d"); }}>2D flat</button>
         </div>
       </div>
-      <div className="flex flex-col gap-3 border-b border-line-dark px-5 py-4 md:px-10 lg:px-14">
+      {labs && step >= 0 && <p aria-live="polite" className="border-b border-line-dark px-5 py-3 text-[15px] md:px-10 lg:px-14"><span className="mr-2 font-mono text-red">{step + 1}/{LAB_PATH.length}</span>{LAB_PATH[step]}</p>}
+      {!labs && <div className="flex flex-col gap-3 border-b border-line-dark px-5 py-4 md:px-10 lg:px-14">
         <div className="flex flex-wrap items-center gap-1" role="group" aria-label="Guided tour">
           <button className={`twin-btn border border-red ${playing ? "is-on" : ""}`} onClick={() => { if (playing) { setPlaying(false); return; } openScene(scene ?? 0); setPlaying(true); }}>{playing ? "Pause tour" : "Play tour"}</button>
           {TOUR.map((x, i) => <button key={x.n} className={`twin-btn ${scene === i ? "is-on" : ""}`} aria-pressed={scene === i} onClick={() => { setPlaying(false); openScene(scene === i ? null : i); }}><span className="mr-1 font-mono text-[11px] opacity-60">0{i + 1}</span>{x.n}</button>)}
         </div>
         {scene !== null && <div aria-live="polite" className="max-w-[760px]"><p className="text-[22px] font-medium leading-7 tracking-[-0.015em]">{TOUR[scene].t}</p><p className="mt-1 text-[15px] leading-[23px] text-soft">{TOUR[scene].b}</p></div>}
-      </div>
-      {view === "2d" && <FlatView scene={scene} sel={sel} expanded={expanded} onExpand={() => setExpanded(!expanded)} onPick={(id) => setSel(sel === id ? null : id)} />}
+      </div>}
+      {view === "2d" && <FlatView step={step} scene={scene} sel={sel} expanded={expanded} onExpand={() => setExpanded(!expanded)} onPick={(id) => setSel(sel === id ? null : id)} />}
       <div className={`relative h-[620px] overflow-hidden md:h-[820px] ${view === "2d" ? "hidden" : ""}`}>
         <div ref={host} className="absolute inset-0" />
         {failed && <p className="absolute inset-0 flex items-center justify-center p-8 text-center text-soft">3D view isn&apos;t available in this browser. Choose a part from the list below.</p>}
         {!failed && <div className="pointer-events-none absolute inset-0 overflow-hidden">
           {NODES.map((n) => (
-            <button key={n.id} ref={(b) => { labels.current[n.id] = b; }} onClick={() => { setTrace(-1); setScene(null); setPlaying(false); setSel(sel === n.id ? null : n.id); }} onMouseEnter={() => setHover(n.id)} onMouseLeave={() => setHover(null)}
+            <button key={n.id} ref={(b) => { labels.current[n.id] = b; }} onClick={() => { setTrace(-1); setStep(-1); setScene(labs ? 3 : null); setPlaying(false); setSel(sel === n.id ? null : n.id); }} onMouseEnter={() => setHover(n.id)} onMouseLeave={() => setHover(null)}
               aria-pressed={active === n.id} className={`twin-chip pointer-events-auto absolute left-0 top-0 ${active === n.id ? "is-on" : ""} ${active === n.id ? "inline-flex" : n.minor ? "hidden lg:inline-flex" : "hidden md:inline-flex"}`}>
               {n.label}
             </button>
@@ -490,7 +507,7 @@ export default function AIInfra3D() {
 
         <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-3 md:left-6 md:top-6">
           <span className="twin-glass label inline-flex items-center gap-2 self-start px-3 py-2"><i className="h-1.5 w-1.5 bg-red" />Concept · Planned architecture</span>
-          <div className="twin-glass pointer-events-auto hidden w-[190px] flex-col p-1.5 md:flex" role="group" aria-label="Show one floor">
+          <div className={`twin-glass pointer-events-auto hidden w-[190px] flex-col p-1.5 ${labs ? "" : "md:flex"}`} role="group" aria-label="Show one floor">
             {[...LAYERS].reverse().map((l, ri) => { const i = LAYERS.length - 1 - ri; return (
               <button key={l} aria-pressed={layer === i} onClick={() => { setSel(null); setTrace(-1); setLayer(layer === i ? null : i); }} className={`twin-row ${layer === i ? "is-on" : ""}`}><span className="font-mono text-[11px] opacity-60">L{i + 1}</span>{l}</button>
             ); })}
@@ -504,14 +521,14 @@ export default function AIInfra3D() {
         )}
 
         <div className="pointer-events-none absolute inset-x-4 bottom-4 flex flex-wrap items-end justify-between gap-3 md:inset-x-6 md:bottom-6">
-          <div className="twin-glass pointer-events-auto flex flex-wrap gap-1 p-1">
+          <div className={`twin-glass pointer-events-auto flex-wrap gap-1 p-1 ${labs ? "hidden" : "flex"}`}>
             <button className={`${tool} ${trace >= 0 ? "is-on" : ""}`} onClick={() => { openScene(null); setSel(null); setTrace(trace >= 0 ? -1 : 0); }}>{trace >= 0 ? "Stop trace" : "Trace a request"}</button>
             <button className={`${tool} ${expanded ? "is-on" : ""}`} aria-pressed={expanded} onClick={() => setExpanded(!expanded)}>{expanded ? "16 GPUs · proposed" : "8 GPUs · initial"}</button>
             <button className={tool} aria-pressed={!lifted} onClick={() => setLifted(!lifted)}>{lifted ? "Collapse floors" : "Lift floors"}</button>
           </div>
           <div className="twin-glass pointer-events-auto flex gap-1 p-1">
-            <button className={`${tool} hidden md:block`} aria-label="Zoom in" onClick={() => zoom(0.85)}>+</button>
-            <button className={`${tool} hidden md:block`} aria-label="Zoom out" onClick={() => zoom(1.18)}>−</button>
+            <button className={`${tool} ${labs ? "" : "hidden md:block"}`} aria-label="Zoom in" onClick={() => zoom(0.85)}>+</button>
+            <button className={`${tool} ${labs ? "" : "hidden md:block"}`} aria-label="Zoom out" onClick={() => zoom(1.18)}>−</button>
             <button className={tool} onClick={reset}>Reset</button>
           </div>
         </div>
@@ -526,7 +543,7 @@ export default function AIInfra3D() {
 }
 
 /** The same architecture as a flat, readable diagram. Shares selection and GPU state with the 3D view. */
-function FlatView({ scene, sel, expanded, onExpand, onPick }: { scene: number | null; sel: string | null; expanded: boolean; onExpand: () => void; onPick: (id: string) => void }) {
+function FlatView({ step, scene, sel, expanded, onExpand, onPick }: { step: number; scene: number | null; sel: string | null; expanded: boolean; onExpand: () => void; onPick: (id: string) => void }) {
   const ids = scene !== null ? TOUR[scene].ids : null;
   const cell = (id: string, extra = "") => `twin-flat ${sel === id ? "is-on" : ""} ${ids && !ids.includes(id) ? "opacity-25" : ""} ${ids?.includes(id) ? "!border-red" : ""} ${extra}`;
   const Stem = ({ cols = 3 }: { cols?: number }) => <div aria-hidden className={`hidden h-6 md:grid ${cols === 4 ? "grid-cols-4" : "grid-cols-3"}`}>{Array.from({ length: cols }, (_, i) => <span key={i} className="mx-auto w-px bg-mute/50" />)}</div>;
@@ -546,7 +563,8 @@ function FlatView({ scene, sel, expanded, onExpand, onPick }: { scene: number | 
         <span className="twin-glass label inline-flex items-center gap-2 px-3 py-2"><i className="h-1.5 w-1.5 bg-red" />Concept · Planned architecture</span>
         <button className={`twin-btn twin-glass ${expanded ? "is-on" : ""}`} aria-pressed={expanded} onClick={onExpand}>{expanded ? "16 GPUs · proposed" : "8 GPUs · initial"}</button>
       </div>
-      {scene === 3 && <LabsFlat />}
+      {scene === 3 && <LabsFlat step={step} />}
+      {scene === 3 && <p className="label pt-2 text-center text-red">Central AI platform</p>}
       {scene === 5 && <div className="mx-auto aspect-[3/4] w-full max-w-[360px]"><BdMap /></div>}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_170px]">
         <div className="flex min-w-0 flex-col">

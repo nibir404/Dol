@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { BdMap, LabsFlat } from "./AIFlatDiagrams";
+import { BdMap } from "./AIFlatDiagrams";
 import IsoDiagram from "./IsoDiagram";
 import { Reveal } from "./Reveal";
 
@@ -145,7 +145,7 @@ export function AILabs() {
   return (
     <Frame n="07.8" light tag="Planned AI Labs" title={<>Learn, research and build.<br />Then adopt what proves useful.</>} sub="Two planned AI Labs give students and faculty hands-on AI computing for courses, research and projects."
       note="The lab design is a planned baseline: final sizing follows a representative 52-seat commissioning test, and the vendor proposes the lab server configuration. No student project receives unrestricted production access. Every promotion is owned, mentored, isolated and auditable.">
-      <div className="border-t border-line p-5 md:p-10 lg:px-14"><LabsFlat /></div>
+      <AIInfra3D labs />
       <div className="flex flex-col border-t border-line bg-white lg:flex-row">
         <dl className="grid min-w-0 flex-1 grid-cols-1 md:grid-cols-3">{LAB_KEY.map(([k, v]) => <div key={k} className="flex flex-1 flex-col justify-center gap-2 border-b border-line px-5 py-6 md:border-b-0 md:border-r md:px-10"><dt className="text-[20px] font-medium tracking-[-0.01em]">{k}</dt><dd className="text-[15px] leading-[23px] text-body">{v}</dd></div>)}</dl>
       </div>
