@@ -37,7 +37,12 @@ export default function Nav() {
     addEventListener("keydown", onKey);
     return () => removeEventListener("keydown", onKey);
   }, []);
-  useEffect(() => { document.documentElement.style.overflow = open ? "hidden" : ""; }, [open]);
+  useEffect(() => { document.documentElement.style.overflow = open ? "hidden" : ""; dispatchEvent(new CustomEvent("dol:menu-state", { detail: open })); }, [open]);
+  useEffect(() => {
+    const on = (e: Event) => setOpen((e as CustomEvent<boolean>).detail);
+    addEventListener("dol:menu", on);
+    return () => removeEventListener("dol:menu", on);
+  }, []);
 
   const isActive = (g: (typeof NAV)[number]) => path === g.href || g.items?.some((i) => path === i.href || path.startsWith(i.href + "/"));
   const enter = (l: string) => { clearTimeout(closeT.current); setMenu(l); };
@@ -78,7 +83,7 @@ export default function Nav() {
               <PrimaryButton size="sm" href="/coverage">Check coverage</PrimaryButton>
             </div>
             <ThemeToggle className="nav-fg hidden lg:inline-flex" />
-            <button aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen((o) => !o)} className="nav-group nav-fg relative flex h-11 w-11 items-center justify-center rounded-[6px] lg:hidden">
+            <button aria-label={open ? "Close menu" : "Open menu"} aria-expanded={open} onClick={() => setOpen((o) => !o)} className="nav-group nav-fg relative hidden h-11 w-11 items-center justify-center rounded-[6px] md:flex lg:hidden">
               <span className={clsx("absolute h-px w-4 bg-current transition-transform duration-300", open ? "rotate-45" : "-translate-y-[3px]")} />
               <span className={clsx("absolute h-px w-4 bg-current transition-transform duration-300", open ? "-rotate-45" : "translate-y-[3px]")} />
             </button>
@@ -119,12 +124,15 @@ export default function Nav() {
       </motion.header>
 
       <AnimatePresence>
+        {open && <motion.div key="scrim" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setOpen(false)} className="fixed inset-0 z-[53] bg-black/40 backdrop-blur-[2px] md:hidden" aria-hidden />}
         {open && (
           <motion.div
-            initial={{ clipPath: "inset(0 0 100% 0)" }} animate={{ clipPath: "inset(0 0 0% 0)" }} exit={{ clipPath: "inset(0 0 100% 0)" }} transition={{ duration: 0.55, ease: [0.77, 0, 0.175, 1] }}
-            className="util-bar fixed inset-0 z-40 flex flex-col overflow-y-auto bg-ink lg:hidden px-5 pb-[max(2rem,env(safe-area-inset-bottom))] pt-[96px] md:px-6 md:pt-[120px] lg:px-[120px]"
+            initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", stiffness: 380, damping: 40 }}
+            drag="y" dragConstraints={{ top: 0, bottom: 0 }} dragElastic={{ top: 0, bottom: 0.6 }} onDragEnd={(_, i) => { if (i.offset.y > 120 || i.velocity.y > 600) setOpen(false); }}
+            className="sheet fixed inset-x-0 bottom-0 z-[54] flex max-h-[88dvh] flex-col overflow-y-auto rounded-t-[14px] px-5 pb-[calc(88px+env(safe-area-inset-bottom))] pt-3 lg:hidden md:inset-0 md:max-h-none md:rounded-none md:px-6 md:pt-[120px]"
             data-lenis-prevent
           >
+            <span aria-hidden className="mx-auto mb-3 block h-1 w-10 shrink-0 rounded-full bg-[var(--nav-line)] md:hidden" />
             {/* desktop: mega grid */}
             <div className="hidden gap-8 lg:grid lg:grid-cols-5">
               {NAV.map((g, i) => (
@@ -146,9 +154,9 @@ export default function Nav() {
               {NAV.map((g, i) => (
                 <motion.li key={g.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.12 + i * 0.05, duration: 0.5, ease }} className="border-b border-line-dark">
                   <div className="flex items-center justify-between">
-                    <Link href={g.href} className={clsx("py-5 text-[30px] font-medium tracking-[-0.03em]", isActive(g) ? "text-white" : "text-white/80")}>{g.label}</Link>
+                    <Link href={g.href} className={clsx("py-4 text-[22px] font-medium tracking-[-0.02em]", isActive(g) ? "text-white" : "text-white/80")}>{g.label}</Link>
                     {g.items && (
-                      <button aria-label={`Show ${g.label} pages`} aria-expanded={acc === g.label} onClick={() => setAcc(acc === g.label ? null : g.label)} className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-white">
+                      <button aria-label={`Show ${g.label} pages`} aria-expanded={acc === g.label} onClick={() => setAcc(acc === g.label ? null : g.label)} className="flex h-10 w-10 items-center justify-center rounded-[6px] border border-[var(--nav-line)]">
                         <svg width="12" height="12" viewBox="0 0 10 10" className={clsx("transition-transform duration-300", acc === g.label && "rotate-180")} aria-hidden><path d="M1 3l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
                       </button>
                     )}

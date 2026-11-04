@@ -42,7 +42,7 @@ export function Services() {
           <Reveal><Tag>What do you need?</Tag></Reveal>
           <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.05] md:text-[48px]">Four ways DOL keeps<br className="hidden sm:block" /> you connected.</h2></Reveal>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="snap-row grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
           {SERVICES.map((s, i) => (
             <motion.div
               key={s.title}

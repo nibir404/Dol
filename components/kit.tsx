@@ -103,7 +103,7 @@ export function Section({
 /** Responsive card grid with hairline dividers and hover lift. */
 export function Grid({ cols = 3, tone = "light", children }: { cols?: 2 | 3 | 4 | 5; tone?: Tone; children: React.ReactNode }) {
   const c = { 2: "md:grid-cols-2", 3: "md:grid-cols-2 xl:grid-cols-3", 4: "sm:grid-cols-2 xl:grid-cols-4", 5: "sm:grid-cols-2 lg:grid-cols-5" }[cols];
-  return <div className={clsx("grid grid-cols-1 gap-px", c, isDark(tone) ? "bg-line-dark" : "bg-line")}>{children}</div>;
+  return <div className={clsx("snap-row grid grid-cols-1 gap-px", c, isDark(tone) ? "bg-line-dark" : "bg-line")}>{children}</div>;
 }
 
 export function Card({ children, tone = "light", className, highlight }: { children: React.ReactNode; tone?: Tone; className?: string; highlight?: boolean }) {
