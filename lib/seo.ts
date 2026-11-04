@@ -15,7 +15,7 @@ const PAGES: Record<string, { t: string; d: string }> = {
   "/web-hosting": { t: "BDIX Web Hosting in Bangladesh from ৳2,299/year", d: "Fast BDIX web hosting with NVMe storage, free SSL and daily backups. Plans from ৳2,299 a year, supported locally." },
   "/vps": { t: "BDIX VPS Server in Bangladesh from ৳1,500/month", d: "Linux or Windows VPS with dedicated vCPU, NVMe and a 1 Gbps BDIX port. Full root access, from ৳1,500 a month." },
   "/data-center": { t: "Colocation in Dhaka — 1U to Full Rack, Tier III", d: "Tier III colocation in Bangladesh from 1U to a full cabinet, with redundant power, cooling, BDIX connectivity and 24/7 monitoring." },
-  "/data-center/ai-infrastructure": { t: "AI Infrastructure & GPU Servers in Bangladesh", d: "Order GPU systems hosted in a Tier III data center in Bangladesh for AI training and inference, on BDIX with local engineers." },
+  "/data-center/ai-infrastructure": { t: "Planned AI Infrastructure in Bangladesh", d: "A planned GPU platform at Daffodil Smart City, Ashulia, for learning, research and operations, with selected services for Bangladesh later." },
   "/solutions": { t: "Network & Hosting Solutions for Businesses", d: "One accountable design for multi-site networks, hosting and colocation. DOL engineers discover, design, deliver and operate." },
   "/support": { t: "Support Center — Help with Internet, Billing & Hosting", d: "Get help fast: guided checks for slow internet, billing and hosting, plus 24/7 phone and WhatsApp support from DOL." },
   "/support/knowledge-base": { t: "Knowledge Base — Internet, Billing & Hosting Guides", d: "Short, practical guides for DOL internet, Wi-Fi, billing, hosting, VPS, colocation and account security." },

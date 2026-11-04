@@ -92,11 +92,11 @@ export default function GpuGrid() {
       <div className="relative z-10 flex flex-col gap-5 px-5 pb-10 pt-20 md:flex-row md:items-end md:justify-between md:px-10 lg:px-[176px]">
         <div className="flex flex-col gap-5">
           <Reveal><Tag>GPU capacity · Ashulia</Tag></Reveal>
-          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.02] md:text-[48px]">Capacity comes online,<br /> card by card.</h2></Reveal>
+          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.02] md:text-[48px]">Capacity planned,<br /> card by card.</h2></Reveal>
         </div>
         <Reveal delay={0.1} className="flex items-baseline gap-3 font-mono">
           <span className="text-[44px] font-medium tabular-nums tracking-[-0.03em] text-red">{String(live).padStart(2, "0")}</span>
-          <span className="label text-soft">/ {COLS * ROWS} slots live</span>
+          <span className="label text-soft">/ {COLS * ROWS} slots · illustration</span>
         </Reveal>
       </div>
       <div className="relative">

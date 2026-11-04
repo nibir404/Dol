@@ -304,3 +304,24 @@ html[data-theme="light"] .sheet .text-white, html[data-theme="light"] .sheet .te
 @media (max-width: 767px) { .hero-fade { background: linear-gradient(0deg, var(--theme-bg) 0%, color-mix(in srgb, var(--theme-bg) 85%, transparent) 45%, transparent 75%) !important; } }
 @media (max-width: 767px) { html .hero-search div[role="radiogroup"] { background-color: var(--nav-group) !important; } html .hero-search div[role="radiogroup"] button[aria-checked="false"] { color: var(--nav-fg) !important; } }
 @media (max-width: 767px) { html .hero-search button[aria-checked="true"] { color: #fff !important; } html .hero-search button[aria-checked="true"] > span.absolute { background: #E31E24 !important; } .hero-search input { min-height: 52px; } }
+
+/* AI infrastructure 3D twin: HUD surfaces follow the theme */
+.twin-glass { background: color-mix(in srgb, var(--theme-bg) 80%, transparent); color: var(--theme-fg); border: 1px solid color-mix(in srgb, var(--theme-fg) 16%, transparent); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: 6px; }
+.twin-chip { align-items: center; white-space: nowrap; padding: 4px 8px; font-size: 12px; line-height: 16px; font-weight: 500; border-radius: 4px; will-change: transform; background: color-mix(in srgb, var(--theme-bg) 84%, transparent); color: var(--theme-fg); border: 1px solid color-mix(in srgb, var(--theme-fg) 18%, transparent); transition: background-color .2s, border-color .2s, color .2s, opacity .2s; }
+.twin-chip:hover { border-color: #E31E24; }
+.twin-chip.is-on { background: #E31E24; border-color: #E31E24; color: #fff; }
+.twin-btn { min-height: 36px; padding: 0 12px; font-size: 13px; font-weight: 500; border-radius: 4px; color: var(--theme-fg); transition: background-color .2s, color .2s; }
+.twin-btn:hover { background: color-mix(in srgb, var(--theme-fg) 10%, transparent); }
+.twin-btn.is-on { background: #E31E24; color: #fff; }
+.twin-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; font-size: 13px; text-align: left; border-radius: 4px; transition: background-color .2s, color .2s; }
+.twin-row:hover { background: color-mix(in srgb, var(--theme-fg) 10%, transparent); }
+.twin-row.is-on { background: #E31E24; color: #fff; }
+.twin-tag { padding: 3px 8px; font-size: 12px; border-radius: 4px; border: 1px solid color-mix(in srgb, var(--theme-fg) 18%, transparent); }
+@media (hover: none) { .twin-chip:hover, .twin-btn:hover, .twin-row:hover { background: revert-layer; } }
+.ai-flow { animation: tour-flow 1.1s linear infinite; }
+.ai-link { display: block; height: 24px; width: 1px; margin-left: 24px; background: #E31E24; flex: none; }
+@media (min-width: 768px) { .ai-link { height: 1px; width: 32px; margin-left: 0; } }
+@media (prefers-reduced-motion: reduce) { .ai-flow { animation: none; } }
+.twin-flat { border: 1px solid color-mix(in srgb, var(--theme-fg) 20%, transparent); border-radius: 6px; color: var(--theme-fg); background: color-mix(in srgb, var(--theme-fg) 3%, transparent); transition: border-color .2s, background-color .2s; }
+.twin-flat:hover { border-color: #E31E24; }
+.twin-flat.is-on { border-color: #E31E24; background: color-mix(in srgb, #E31E24 14%, transparent); box-shadow: inset 0 0 0 1px #E31E24; }

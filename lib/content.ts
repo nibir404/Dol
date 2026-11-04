@@ -209,7 +209,7 @@ export const NAV: { label: string; href: string; items?: { label: string; href: 
   ] },
   { label: "Data Center", href: "/data-center", items: [
     { label: "Colocation", href: "/data-center", b: "1U to a full cabinet in Dhaka." },
-    { label: "AI Infrastructure", href: "/data-center/ai-infrastructure", b: "GPU systems you can order today." },
+    { label: "AI Infrastructure", href: "/data-center/ai-infrastructure", b: "A planned GPU platform, in development." },
   ] },
   { label: "Solutions", href: "/solutions" },
   { label: "Support", href: "/support", items: [
