@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { BdMap, LabsFlat } from "./AIFlatDiagrams";
+import { BdMap } from "./AIFlatDiagrams";
 import IsoDiagram from "./IsoDiagram";
 import { Reveal } from "./Reveal";
 
@@ -105,28 +105,51 @@ export function AIUses() {
   );
 }
 
-/* A vertical run of gates that lights up one by one */
+/* An interactive stepper: pick any step, or run them in order and watch the record build up */
 type Step = { t: string; b: string; ex: string };
-function useRun(len: number) {
-  const [i, setI] = useState(len - 1);
+function Gates({ steps, logTitle }: { steps: Step[]; logTitle: string }) {
+  const [i, setI] = useState(0);
   const [running, setRunning] = useState(false);
-  useEffect(() => { if (!running) return; if (i >= len - 1) { setRunning(false); return; } const t = setTimeout(() => setI(i + 1), 750); return () => clearTimeout(t); }, [i, len, running]);
-  return { i, running, run: () => { setI(0); setRunning(true); } };
-}
-function Gates({ steps, i }: { steps: Step[]; i: number }) {
+  const last = steps.length - 1;
+  useEffect(() => {
+    if (!running) return;
+    if (i >= last) { setRunning(false); return; }
+    const t = setTimeout(() => setI(i + 1), 1800);
+    return () => clearTimeout(t);
+  }, [i, last, running]);
+  const go = (n: number) => { setRunning(false); setI(Math.max(0, Math.min(last, n))); };
+  const s = steps[i];
   return (
-    <ol className="flex flex-col">
-      {steps.map((s, k) => (
-        <li key={s.t} className={`grid grid-cols-[32px_1fr] gap-x-4 transition-opacity duration-300 md:grid-cols-[32px_190px_1fr] ${k <= i ? "" : "opacity-35"}`}>
-          <span className="relative flex justify-center">
-            <span className={`z-[1] mt-4 flex h-8 w-8 items-center justify-center rounded-full border font-mono text-[12px] transition-colors duration-300 ${k <= i ? "keep-white border-red bg-red text-white" : "border-mute"}`}>{k + 1}</span>
-            {k < steps.length - 1 && <span aria-hidden className={`absolute bottom-0 top-4 w-px transition-colors duration-300 ${k < i ? "bg-red" : "bg-mute/40"}`} />}
-          </span>
-          <span className="pt-5 text-[17px] font-medium">{s.t}</span>
-          <span className="col-start-2 pb-4 text-[14px] leading-[22px] md:col-start-3 md:pt-5"><span className="block opacity-70">{s.b}</span><span className="mt-1 block font-mono text-[12px] text-red">{s.ex}</span></span>
-        </li>
-      ))}
-    </ol>
+    <div className="step-box" onKeyDown={(e) => { if (e.key === "ArrowRight") { e.preventDefault(); go(i + 1); } if (e.key === "ArrowLeft") { e.preventDefault(); go(i - 1); } }}>
+      <ol className="grid" style={{ gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))` }}>
+        {steps.map((x, k) => (
+          <li key={x.t} className="min-w-0">
+            <button onClick={() => go(k)} aria-current={k === i ? "step" : undefined} aria-label={`Step ${k + 1}: ${x.t}`} className={`step-cell ${k === i ? "is-on" : k < i ? "is-done" : ""}`}>
+              <span className="font-mono text-[12px]">{k < i ? "✓" : String(k + 1).padStart(2, "0")}</span>
+              <span className="hidden text-[13px] font-medium leading-[17px] md:block">{x.t}</span>
+            </button>
+          </li>
+        ))}
+      </ol>
+      <div className="grid grid-cols-1 md:grid-cols-[3fr_2fr]">
+        <div aria-live="polite" className="flex min-h-[250px] flex-col gap-5 p-5 md:p-7">
+          <div className="flex flex-col gap-1.5"><span className="label text-red">Step {i + 1} of {steps.length}</span><span className="text-[28px] font-medium leading-tight tracking-[-0.02em]">{s.t}</span></div>
+          <dl className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1"><dt className="label opacity-60">What happens</dt><dd className="text-[16px] leading-6">{s.b}</dd></div>
+            <div className="flex flex-col gap-1"><dt className="label opacity-60">In this example</dt><dd className="text-[16px] font-medium leading-6">{s.ex}</dd></div>
+          </dl>
+          <div className="mt-auto flex flex-wrap gap-2 pt-2">
+            <button className="twin-btn border border-[color:var(--step-line)] disabled:opacity-40" disabled={i === 0} onClick={() => go(i - 1)}>Previous</button>
+            <button className="twin-btn border border-[color:var(--step-line)] disabled:opacity-40" disabled={i === last} onClick={() => go(i + 1)}>Next</button>
+            <button className={`twin-btn border border-red ${running ? "is-on" : ""}`} onClick={() => { if (running) { setRunning(false); return; } if (i === last) setI(0); setRunning(true); }}>{running ? "Pause" : i === last ? "Run again" : "Run the example"}</button>
+          </div>
+        </div>
+        <div className="step-log flex flex-col gap-3 p-5 md:p-7">
+          <span className="label opacity-60">{logTitle}</span>
+          <ol className="flex flex-col gap-2.5">{steps.slice(0, i + 1).map((x, k) => <li key={x.t} className="grid grid-cols-[22px_1fr] gap-1 font-mono text-[12px] leading-[18px]"><span className="text-red">{String(k + 1).padStart(2, "0")}</span><span className={k === i ? "" : "opacity-60"}>{x.ex}</span></li>)}</ol>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -141,17 +164,16 @@ const LAB_STEPS: Step[] = [
 ];
 const LAB_KEY = [["2 AI Labs", "25 students and 1 instructor in each: 52 seats."], ["2 × H200 NVL-class", "A shared academic GPU pool, or a validated equivalent. GPU time comes through accounts and quotas, not one GPU per seat."], ["Separate from production", "Lab GPUs and the lab network zone stay apart from the eight production GPUs. Each user has an account, a quota and a resettable environment."]];
 export function AILabs() {
-  const { i, run, running } = useRun(LAB_STEPS.length);
   return (
     <Frame n="07.8" light tag="Planned AI Labs" title={<>Learn, research and build.<br />Then adopt what proves useful.</>} sub="Two planned AI Labs give students and faculty hands-on AI computing for courses, research and projects."
       note="The lab design is a planned baseline: final sizing follows a representative 52-seat commissioning test, and the vendor proposes the lab server configuration. No student project receives unrestricted production access. Every promotion is owned, mentored, isolated and auditable.">
-      <div className="border-t border-line p-5 md:p-10 lg:px-14"><LabsFlat /></div>
+      <AIInfra3D labs />
       <div className="flex flex-col border-t border-line bg-white lg:flex-row">
         <dl className="grid min-w-0 flex-1 grid-cols-1 md:grid-cols-3">{LAB_KEY.map(([k, v]) => <div key={k} className="flex flex-1 flex-col justify-center gap-2 border-b border-line px-5 py-6 md:border-b-0 md:border-r md:px-10"><dt className="text-[20px] font-medium tracking-[-0.01em]">{k}</dt><dd className="text-[15px] leading-[23px] text-body">{v}</dd></div>)}</dl>
       </div>
       <div className="border-t border-line px-5 py-10 md:px-10 lg:px-14">
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-4"><div><p className="text-[22px] font-medium">Follow one student project</p><p className="text-[14px] text-body">Synthetic example: a Bangla course-notes assistant.</p></div><button disabled={running} onClick={run} className="rounded-[6px] border border-ink px-4 py-2.5 text-[14px] disabled:opacity-50">{running ? "Running" : "Run the example"}</button></div>
-        <Gates steps={LAB_STEPS} i={i} />
+        <div className="mb-6"><p className="text-[22px] font-medium">Follow one student project</p><p className="text-[14px] text-body">Synthetic example: a Bangla course-notes assistant.</p></div>
+        <Gates steps={LAB_STEPS} logTitle="Project record" />
       </div>
     </Frame>
   );
@@ -166,18 +188,16 @@ const CASES = [
 ];
 export function AIRequest() {
   const [c, setC] = useState(0);
-  const { i, run, running } = useRun(GATE.length);
   const k = CASES[c];
   return (
     <Frame n="07.9" tag="Follow one request" title={<>The right answer starts<br /><span className="text-mute">with the right access.</span></>} sub="Synthetic example. No live system." note="The model cannot grant itself access. Permission checks also apply when an answer is delivered or an action is executed.">
       <div className="flex flex-col border-t border-line-dark lg:flex-row">
         <div className="flex flex-col gap-5 border-b border-line-dark px-5 py-10 md:px-10 lg:w-[38%] lg:shrink-0 lg:border-b-0 lg:border-r lg:px-14">
-          <div className="flex flex-col gap-1" role="group" aria-label="Choose an example">{CASES.map((x, n) => <button key={x.tab} aria-pressed={n === c} onClick={() => { setC(n); run(); }} className={`twin-row !py-3 !text-[14px] ${n === c ? "is-on" : ""}`}>{x.tab}</button>)}</div>
+          <div className="flex flex-col gap-1" role="group" aria-label="Choose an example">{CASES.map((x, n) => <button key={x.tab} aria-pressed={n === c} onClick={() => setC(n)} className={`twin-row !py-3 !text-[14px] ${n === c ? "is-on" : ""}`}>{x.tab}</button>)}</div>
           <span className="label text-mute">Asked by {k.who}</span>
           <p className="text-[24px] font-medium leading-8 tracking-[-0.015em]">“{k.q}”</p>
-          <button disabled={running} onClick={run} className="twin-btn self-start border border-line-strong disabled:opacity-50">{running ? "Running" : "Run again"}</button>
         </div>
-        <div className="min-w-0 flex-1 px-5 py-8 md:px-10"><Gates i={i} steps={GATE.map(([t, b], n) => ({ t, b, ex: k.ex[n] }))} /></div>
+        <div className="min-w-0 flex-1 px-5 py-8 md:px-10"><Gates key={c} logTitle="Audit trail" steps={GATE.map(([t, b], n) => ({ t, b, ex: k.ex[n] }))} /></div>
       </div>
     </Frame>
   );

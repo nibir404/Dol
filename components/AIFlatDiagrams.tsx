@@ -13,7 +13,7 @@ const Lab = ({ name }: { name: string }) => (
 );
 
 /** Isolated academic zone, shared pool and the reviewed route to the central platform. */
-export function LabsFlat() {
+export function LabsFlat({ step = -1 }: { step?: number }) {
   return (
     <div className="flex flex-col gap-6">
       <div className="rounded-[10px] border border-dashed border-red p-4 md:p-6">
@@ -27,7 +27,7 @@ export function LabsFlat() {
       </div>
       <div>
         <p className="label mb-3 opacity-70">From lab to real use</p>
-        <ol className="grid grid-cols-2 gap-2 md:grid-cols-6">{LAB_PATH.map((s, i) => <li key={s} className={`twin-flat flex min-h-[64px] items-center justify-center p-3 text-center text-[14px] font-medium ${i === 0 ? "keep-white !border-red !bg-red !text-white" : ""}`}>{s}</li>)}</ol>
+        <ol className="grid grid-cols-2 gap-2 md:grid-cols-6">{LAB_PATH.map((s, i) => <li key={s} className={`twin-flat flex min-h-[64px] items-center justify-center p-3 text-center text-[14px] font-medium transition-colors duration-300 ${i === step ? "keep-white !border-red !bg-red !text-white" : i < step ? "!border-red" : ""}`}>{s}</li>)}</ol>
         <p className="mt-3 text-right text-[14px] font-medium text-red">↑ Central AI platform, only after adoption decision</p>
       </div>
     </div>
