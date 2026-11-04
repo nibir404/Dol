@@ -194,9 +194,9 @@ export default function InfraTour() {
         {/* copy */}
         <div className="relative flex h-full flex-col justify-end px-5 pb-16 md:justify-center md:px-10 lg:pl-[176px]">
           <motion.div animate={{ opacity: stop === -1 || stop === STOPS.length ? 1 : 0, y: stop === -1 || stop === STOPS.length ? 0 : -16 }} transition={{ duration: 0.45 }} className={clsx("flex max-w-[540px] flex-col gap-6", !(stop === -1 || stop === STOPS.length) && "pointer-events-none absolute")}>
-            <span className="label text-soft">Building the foundation for Bangladesh&apos;s AI future</span>
+            <span className="label text-soft">AI infrastructure · Walkthrough</span>
             <h2 className="h-display text-[36px] leading-[0.98] tracking-[-0.05em] md:text-[48px]">Planned AI infrastructure.<br /><span className="text-red">In development.</span></h2>
-            <p className="max-w-[460px] text-[17px] leading-[27px] text-body">A Tier III data center in the Hi-Tech Park, on BDIX, with local engineers and a planned GPU platform for Daffodil first.</p>
+            <p className="max-w-[460px] text-[17px] leading-[27px] text-body">Walk through the power, cooling, racks and connectivity behind the planned GPU platform: eight GPUs to start, with a proposed path to sixteen.</p>
             <div className="pointer-events-auto flex flex-wrap gap-3 pt-1">
               <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Discuss your use case</PrimaryButton>
               <SecondaryButton href="/data-center/ai-infrastructure">Explore AI infrastructure</SecondaryButton>

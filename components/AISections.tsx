@@ -43,13 +43,13 @@ export function AIHero() {
       <div className="relative flex min-h-[640px] md:min-h-[820px]">
         <Rail n="07" />
         <div className="flex flex-col justify-end gap-7 px-5 pb-14 pt-48 md:w-[720px] md:justify-center md:px-10 md:py-24 lg:px-14">
-          <Reveal><span className="label text-[12px] text-soft">Building the foundation for Bangladesh&apos;s AI future</span></Reveal>
+          <Reveal><span className="label text-[12px] text-soft">AI infrastructure · Planned</span></Reveal>
           <Reveal delay={0.05}>
             <h2 className="h-display text-[36px] leading-[0.95] tracking-[-0.055em] sm:text-[48px] lg:text-[48px]">
               Planned AI<br />infrastructure.<br /><span className="text-red">In development.</span>
             </h2>
           </Reveal>
-          <Reveal delay={0.1}><p className="max-w-[520px] text-[17px] leading-[27px] text-soft md:text-[19px] md:leading-[29px]">A Tier III data center in Bangladesh, on BDIX, with local engineers and a planned GPU platform for Daffodil first, then selected services for Bangladesh.</p></Reveal>
+          <Reveal delay={0.1}><p className="max-w-[520px] text-[17px] leading-[27px] text-soft md:text-[19px] md:leading-[29px]">Private AI, GPU colocation and research compute on infrastructure hosted in-country, connected to BDIX and run by local engineers. Eight GPUs are planned to start; customer services follow internal acceptance.</p></Reveal>
           <Reveal delay={0.15} className="flex flex-wrap gap-3 pt-3">
             <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Discuss your use case</PrimaryButton>
             <SecondaryButton tone="dark" href="/data-center/ai-infrastructure">Explore AI infrastructure</SecondaryButton>
@@ -67,12 +67,60 @@ export function AIHero() {
   );
 }
 
+/* Home page spotlight: what the AI offer is and who it is for */
+export function AISpotlight() {
+  const offers = [
+    { k: "Private AI", t: "Assistants on your own knowledge", b: "For companies that want AI on internal documents without sending them to an offshore service." },
+    { k: "GPU colocation", t: "Host the GPUs you own", b: "Space, power and connectivity for your systems, where facilities allow." },
+    { k: "GPU workloads", t: "Compute for training and inference", b: "For research and product teams, subject to capacity and readiness." },
+  ];
+  const facts = [["08", "GPUs planned to start"], ["16", "Proposed path"], ["BDIX", "Local connectivity"], ["In-country", "Models, data, backups"]];
+  return (
+    <section id="ai-infrastructure" className="flex scroll-mt-24 border-b border-line-dark bg-ink text-white">
+      <Rail n="AI" />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex flex-col lg:flex-row">
+          <div className="flex flex-col gap-6 px-5 py-20 md:px-10 lg:w-[56%] lg:px-14 lg:py-[104px]">
+            <Reveal><Tag>AI infrastructure · Planned</Tag></Reveal>
+            <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[56px]">Run AI on your data.<br /><span className="text-red">Without sending it offshore.</span></h2></Reveal>
+            <Reveal delay={0.1}><p className="max-w-[560px] text-[18px] leading-7 text-soft">A planned in-country GPU platform for private AI, colocation and compute. Tell us your workload now, so we can assess the fit before services open.</p></Reveal>
+            <Reveal delay={0.15} className="flex flex-wrap gap-3 pt-2">
+              <PrimaryButton href="/data-center/ai-infrastructure#enquiry">Discuss your use case</PrimaryButton>
+              <SecondaryButton tone="dark" href="/data-center/ai-infrastructure">See the architecture</SecondaryButton>
+            </Reveal>
+          </div>
+          <ImageReveal className="relative min-h-[320px] flex-1 border-t border-line-dark lg:border-l lg:border-t-0">
+            <Image src="/img/ai-hall.webp" alt="Wireframe AI data hall: planned GPU racks in red, more capacity outlined" fill sizes="(min-width:1024px) 44vw, 100vw" className="theme-invert object-cover" />
+          </ImageReveal>
+        </div>
+        <div className="grid grid-cols-1 border-t border-line-dark md:grid-cols-3">
+          {offers.map((o, i) => (
+            <Reveal key={o.k} delay={i * 0.06} className="flex flex-col gap-3 border-b border-line-dark px-5 py-9 md:border-b-0 md:border-r md:px-8 md:last:border-r-0">
+              <span className="label text-[12px] text-red">{o.k}</span>
+              <span className="text-[24px] font-medium leading-tight tracking-[-0.02em]">{o.t}</span>
+              <span className="text-[16px] leading-6 text-soft">{o.b}</span>
+            </Reveal>
+          ))}
+        </div>
+        <dl className="grid grid-cols-2 border-t border-line-dark md:grid-cols-4">
+          {facts.map(([v, l], i) => (
+            <div key={l} className={`flex flex-col gap-1.5 border-line-dark px-5 py-5 md:border-r md:px-8 md:last:border-r-0 ${i % 2 === 0 ? "border-r" : ""} ${i < 2 ? "border-b md:border-b-0" : ""}`}>
+              <dd className="font-mono text-[24px] font-medium tracking-[-0.02em]">{v}</dd>
+              <dt className="label order-last text-mute">{l}</dt>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
+
 /* 07.1 · Readiness */
 export function AIToday() {
   const cards = [
-    { k: "In place", tone: "green", t: "Our foundation.", b: "Data-center and connectivity experience, with BDIX.", bg: "bg-panel" },
+    { k: "In place", tone: "green", t: "Data center and BDIX.", b: "The facility and connectivity experience the platform builds on.", bg: "bg-panel" },
     { k: "Planned", tone: "red", t: "Eight GPUs to start.", b: "Two GPU servers at Ashulia, not yet installed, with a proposed path to sixteen." },
-    { k: "Later", tone: "mute", t: "Selected services.", b: "Considered after internal acceptance, subject to readiness." },
+    { k: "Later", tone: "mute", t: "Customer services.", b: "Selected services considered after internal acceptance, subject to readiness." },
   ];
   return (
     <section className="flex border-b border-line-dark bg-ink text-white">
@@ -80,8 +128,8 @@ export function AIToday() {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-col justify-between gap-10 px-5 pb-12 pt-20 md:px-10 lg:flex-row lg:items-end lg:px-14 lg:pb-14 lg:pt-[104px]">
           <div className="flex flex-col gap-5">
-            <Reveal><Tag dot="green">Where we are today</Tag></Reveal>
-            <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Programme in development.<br /><span className="text-mute">Daffodil first.</span></h2></Reveal>
+            <Reveal><Tag dot="green">Current status</Tag></Reveal>
+            <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Eight GPUs planned.<br /><span className="text-mute">Not yet installed.</span></h2></Reveal>
           </div>
           <Reveal delay={0.1} className="flex self-start border border-line-strong lg:self-auto">
             <div className="flex flex-col gap-2 border-r border-line-strong px-7 py-5"><span className="label text-mute">GPUs planned</span><span className="font-mono text-[48px] font-medium leading-none">08</span></div>
@@ -114,8 +162,8 @@ export function AIToday() {
 /* 07.2 · Why */
 const WHY = [
   { k: "01 · Tier III reliability", t: "Designed around redundant power and cooling, maintained without shutting down." },
-  { k: "02 · BDIX speed", t: "Traffic stays on Bangladeshi networks, for low latency nationwide." },
-  { k: "03 · Your data stays here", t: "Designed so models, data and backups stay inside Bangladesh." },
+  { k: "02 · BDIX speed", t: "Local traffic stays on BDIX, for lower latency to your local users." },
+  { k: "03 · Your data stays here", t: "Designed so models, data and backups stay in-country." },
   { k: "04 · Local experts", t: "Engineers who plan, install and run with you, in Bangla and English." },
 ];
 function WhyItem({ k, t }: { k: string; t: string }) {
@@ -132,8 +180,8 @@ export function AIWhy() {
       <Rail n="07.2" />
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-col gap-5 px-5 pb-12 pt-20 md:px-10 lg:px-14 lg:pb-14 lg:pt-[104px]">
-          <Reveal><Tag>Why AI with Daffodil</Tag></Reveal>
-          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Built for AI.<br /><span className="text-mute">Based in Bangladesh.</span></h2></Reveal>
+          <Reveal><Tag>Why host AI here</Tag></Reveal>
+          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Your models. Your data.<br /><span className="text-mute">Under your control.</span></h2></Reveal>
         </div>
         <div className="flex flex-col border-t border-line-dark lg:flex-row">
           <ImageReveal className="relative aspect-[4/3] border-line-dark lg:w-[620px] lg:shrink-0 lg:border-r"><TiltImage src="/img/ai-power.webp" alt="Redundant UPS, generators and cooling with two power paths" sizes="(min-width:1024px) 620px, 100vw" imgClassName="object-cover" dark /></ImageReveal>
@@ -158,7 +206,7 @@ export function AIResearch() {
         <div className="flex flex-col justify-between gap-14 border-line px-5 py-20 md:px-10 lg:w-[600px] lg:shrink-0 lg:border-r lg:px-14 lg:py-[104px]">
           <div className="flex flex-col gap-6">
             <Reveal><Tag light>Research-driven</Tag></Reveal>
-            <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">From campus<br />to compute.</h2></Reveal>
+            <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Train locally.<br />Keep data in-country.</h2></Reveal>
             <Reveal delay={0.1}><p className="max-w-[440px] text-[18px] leading-7 text-body md:text-[19px] md:leading-[29px]">Planned to let teams train and test models on local GPUs, without sending research data abroad.</p></Reveal>
           </div>
           <ul className="flex flex-col border-t border-line">
@@ -188,8 +236,8 @@ export function AIWays() {
       <Rail n="07.4" />
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex flex-col gap-5 px-5 pb-12 pt-20 md:px-10 lg:px-14 lg:pb-14 lg:pt-[104px]">
-          <Reveal><Tag>What may come next</Tag></Reveal>
-          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Three future pathways.</h2></Reveal>
+          <Reveal><Tag>For business</Tag></Reveal>
+          <Reveal delay={0.05}><h2 className="h-display text-[36px] leading-[1.03] md:text-[48px]">Three planned ways to use it.</h2></Reveal>
         </div>
         <div className="grid grid-cols-1 border-t border-line-dark md:grid-cols-3">
           {ways.map((w, i) => (
